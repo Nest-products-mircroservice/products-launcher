@@ -1,0 +1,51 @@
+services:
+  nats_server:
+    image: nats:latest
+    ports:
+      - 8222:8222
+
+  client-gateway:
+    build: ./client-gateway
+    ports:
+      - ${CLIENT_GATEWAY_PORT}:3000
+    volumes:
+      - ./client-gateway/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3000
+      - NATS_SERVERS=nats://nats_server:4222
+
+  products_ms:
+    build: ./products-app
+    volumes:
+      - ./products-app/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3001
+      - NATS_SERVERS=nats://nats_server:4222
+      - DATABASE_URL=file:./dev.db
+
+  orders_ms:
+    build: ./orders-app
+    volumes:
+      - ./orders-app/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3002
+      - NATS_SERVERS=nats://nats_server:4222
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@orders_db:${POSTGRES_PORT}/orders?schema=public
+    depends_on:
+      - orders_db
+
+  orders_db:
+    container_name: orders_database
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./orders-app/postgres:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
