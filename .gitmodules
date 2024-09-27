@@ -4,3 +4,6 @@
 [submodule "products-app"]
 	path = products-app
 	url = https://github.com/Nest-products-mircroservice/products-microservice.git
+[submodule "orders-app"]
+	path = orders-app
+	url = https://github.com/Nest-products-mircroservice/orders-microservices.git
