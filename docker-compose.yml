@@ -66,11 +66,11 @@ services:
       - STRIPE_CANCEL_URL=${STRIPE_CANCEL_URL}
       - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
 
-  auth-ms:
-    container_name: auth-ms
-    build: ./auth-ms
+  auth-app:
+    container_name: auth-app
+    build: ./auth-app
     volumes:
-      - ./auth-ms/src:/usr/src/app/src
+      - ./auth-app/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - NATS_SERVERS=${NATS_SERVERS}

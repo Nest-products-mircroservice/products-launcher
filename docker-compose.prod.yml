@@ -1,0 +1,76 @@
+services:
+  nats_server:
+    image: nats:latest
+
+  client-gateway:
+    build:
+      context: ./client-gateway
+      dockerfile: dockerfile.prod
+    image: client_gateway-prod
+    ports:
+      - ${CLIENT_GATEWAY_PORT}:${CLIENT_GATEWAY_PORT}
+    environment:
+      - PORT=${CLIENT_GATEWAY_PORT}
+      - NATS_SERVERS=${NATS_SERVERS}
+
+  # products_ms:
+  #   build: ./products-app
+  #   volumes:
+  #     - ./products-app/src:/usr/src/app/src
+  #   command: npm run start:dev
+  #   environment:
+  #     - PORT=3001
+  #     - NATS_SERVERS=${NATS_SERVERS}
+  #     - DATABASE_URL=file:./dev.db
+
+  # orders_ms:
+  #   build: ./orders-app
+  #   volumes:
+  #     - ./orders-app/src:/usr/src/app/src
+  #   command: npm run start:dev
+  #   environment:
+  #     - PORT=3002
+  #     - NATS_SERVERS=${NATS_SERVERS}
+  #     - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@orders_db:${POSTGRES_PORT}/orders?schema=public
+  #   depends_on:
+  #     - orders_db
+
+  # orders_db:
+  #   container_name: orders_database
+  #   image: postgres:latest
+  #   restart: always
+  #   volumes:
+  #     - ./orders-app/postgres:/var/lib/postgresql/data
+  #   ports:
+  #     - "${POSTGRES_PORT}:5432"
+  #   environment:
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #     - POSTGRES_DB=${POSTGRES_DB}
+
+  # payments-ms:
+  #   container_name: payments-ms
+  #   ports:
+  #     - ${PAYMENTS_MS_PORT}:3003
+  #   build: ./payments-app
+  #   volumes:
+  #     - ./payments-app/src:/usr/src/app/src
+  #   command: npm run start:dev
+  #   environment:
+  #     - PORT=${PAYMENTS_MS_PORT}
+  #     - NATS_SERVERS=${NATS_SERVERS}
+  #     - STRIPE_SECRET=${STRIPE_SECRET}
+  #     - STRIPE_SUCCESS_URL=${STRIPE_SUCCESS_URL}
+  #     - STRIPE_CANCEL_URL=${STRIPE_CANCEL_URL}
+  #     - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
+
+  # auth-app:
+  #   container_name: auth-app
+  #   build: ./auth-app
+  #   volumes:
+  #     - ./auth-app/src:/usr/src/app/src
+  #   command: npm run start:dev
+  #   environment:
+  #     - NATS_SERVERS=${NATS_SERVERS}
+  #     - DATABASE_URL=${AUTH_DATABASE_URL}
+  #     - JWT_SECRET=${JWT_SECRET}
