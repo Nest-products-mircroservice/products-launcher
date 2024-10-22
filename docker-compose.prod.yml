@@ -6,7 +6,7 @@ services:
     build:
       context: ./client-gateway
       dockerfile: dockerfile.prod
-    image: client-gateway-prod
+    image: us-west4-docker.pkg.dev/products-microservices-439002/image-registry/client-gateway
     ports:
       - ${CLIENT_GATEWAY_PORT}:${CLIENT_GATEWAY_PORT}
     environment:
@@ -17,7 +17,7 @@ services:
     build:
       context: ./products-app
       dockerfile: dockerfile.prod
-    image: products-microservice
+    image: us-west4-docker.pkg.dev/products-microservices-439002/image-registry/products-microservice
     environment:
       - PORT=3000
       - NATS_SERVERS=${NATS_SERVERS}
@@ -29,7 +29,7 @@ services:
       dockerfile: dockerfile.prod
       args:
         - ORDERS_DATABASE_URL=${ORDERS_DATABASE_URL}
-    image: orders-microservice
+    image: us-west4-docker.pkg.dev/products-microservices-439002/image-registry/orders-microservice
     environment:
       - PORT=3000
       - NATS_SERVERS=${NATS_SERVERS}
@@ -41,7 +41,7 @@ services:
     build:
       context: ./payments-app
       dockerfile: dockerfile.prod
-    image: payments-microservice
+    image: us-west4-docker.pkg.dev/products-microservices-439002/image-registry/payments-microservice
     environment:
       - PORT=${PAYMENTS_MS_PORT}
       - NATS_SERVERS=${NATS_SERVERS}
@@ -55,7 +55,7 @@ services:
     build:
       context: ./auth-app
       dockerfile: dockerfile.prod
-    image: auth-microservice
+    image: us-west4-docker.pkg.dev/products-microservices-439002/image-registry/auth-microservice
     environment:
       - NATS_SERVERS=${NATS_SERVERS}
       - DATABASE_URL=${AUTH_DATABASE_URL}
