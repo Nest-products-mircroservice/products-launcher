@@ -11,6 +11,7 @@
 - Revisar un pod: `kubectl describe pod <nombre>`
 - Eliminar pod: `kubectl delete pod <nombre>`
 - Revisar logs: `kubectl logs <nombre>`
+- Reinicar deployments: `kubectl rollout deployment <nombre>`
 
 # Crear deployment:
 
